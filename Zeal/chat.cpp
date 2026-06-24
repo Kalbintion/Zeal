@@ -1005,11 +1005,89 @@ void Chat::InitPercentReplacements() {
     Zeal::String::replace(str_data, "%loc", ss.str());
   });
   percent_replacements.push_back([](std::string &str_data) {
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(2) << std::ceil(Zeal::Game::get_self()->Position.x * 100) / 100 << " "
+       << std::ceil(Zeal::Game::get_self()->Position.y * 100) / 100;
+    Zeal::String::replace(str_data, "%pos", ss.str());
+  });
+  percent_replacements.push_back([](std::string &str_data) {
     std::string target_hp;
     ZealService::get_instance()->labels_hook->GetLabel(29, target_hp);
     Zeal::String::replace(str_data, "%targethp", target_hp + "%");
     Zeal::String::replace(str_data, "%th", target_hp + "%");
   });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string pet_hp;
+    ZealService::get_instance()->labels_hook->GetLabel(69, pet_hp);
+    Zeal::String::replace(str_data, "%php", pet_hp + "%");
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string pet_name;
+    ZealService::get_instance()->labels_hook->GetLabel(68, pet_name);
+    Zeal::String::replace(str_data, "%pname", pet_name);
+    Zeal::String::replace(str_data, "%pn", pet_name);
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string player_str;
+    ZealService::get_instance()->labels_hook->GetLabel(5, player_str);
+    Zeal::String::replace(str_data, "%str", player_str);
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string player_sta;
+    ZealService::get_instance()->labels_hook->GetLabel(6, player_sta);
+    Zeal::String::replace(str_data, "%sta", player_sta);
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string player_dex;
+    ZealService::get_instance()->labels_hook->GetLabel(7, player_dex);
+    Zeal::String::replace(str_data, "%dex", player_dex);
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string player_agi;
+    ZealService::get_instance()->labels_hook->GetLabel(8, player_agi);
+    Zeal::String::replace(str_data, "%agi", player_agi);
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string player_wis;
+    ZealService::get_instance()->labels_hook->GetLabel(9, player_wis);
+    Zeal::String::replace(str_data, "%wis", player_wis);
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string player_int;
+    ZealService::get_instance()->labels_hook->GetLabel(10, player_int);
+    Zeal::String::replace(str_data, "%int", player_int);
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string player_cha;
+    ZealService::get_instance()->labels_hook->GetLabel(11, player_cha);
+    Zeal::String::replace(str_data, "%cha", player_cha);
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string player_pr;
+    ZealService::get_instance()->labels_hook->GetLabel(12, player_pr);
+    Zeal::String::replace(str_data, "%pr", player_pr);
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string player_dr;
+    ZealService::get_instance()->labels_hook->GetLabel(13, player_dr);
+    Zeal::String::replace(str_data, "%pr", player_dr);
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string player_fr;
+    ZealService::get_instance()->labels_hook->GetLabel(14, player_fr);
+    Zeal::String::replace(str_data, "%fr", player_fr);
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string player_cr;
+    ZealService::get_instance()->labels_hook->GetLabel(15, player_cr);
+    Zeal::String::replace(str_data, "%fr", player_cr);
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string player_mr;
+    ZealService::get_instance()->labels_hook->GetLabel(16, player_mr);
+    Zeal::String::replace(str_data, "%fr", player_mr);
+  });
+  
 }
 
 void Chat::handle_incoming_gsay(const char *msg) {
