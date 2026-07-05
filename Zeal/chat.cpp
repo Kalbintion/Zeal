@@ -1070,7 +1070,7 @@ void Chat::InitPercentReplacements() {
   percent_replacements.push_back([](std::string &str_data) {
     std::string player_dr;
     ZealService::get_instance()->labels_hook->GetLabel(13, player_dr);
-    Zeal::String::replace(str_data, "%pr", player_dr);
+    Zeal::String::replace(str_data, "%dr", player_dr);
   });
   percent_replacements.push_back([](std::string &str_data) {
     std::string player_fr;
@@ -1080,14 +1080,61 @@ void Chat::InitPercentReplacements() {
   percent_replacements.push_back([](std::string &str_data) {
     std::string player_cr;
     ZealService::get_instance()->labels_hook->GetLabel(15, player_cr);
-    Zeal::String::replace(str_data, "%fr", player_cr);
+    Zeal::String::replace(str_data, "%cr", player_cr);
   });
   percent_replacements.push_back([](std::string &str_data) {
     std::string player_mr;
     ZealService::get_instance()->labels_hook->GetLabel(16, player_mr);
-    Zeal::String::replace(str_data, "%fr", player_mr);
+    Zeal::String::replace(str_data, "%mr", player_mr);
   });
-  
+  percent_replacements.push_back([](std::string &str_data) {
+    int player_fishing = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillFishing];
+    Zeal::String::replace(str_data, "%fishing", player_fishing == 255 ? "0" : std::to_string(player_fishing));
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    int player_make_poison = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillMakePoison];
+    Zeal::String::replace(str_data, "%make_poison", player_make_poison == 255 ? "0" : std::to_string(player_make_poison));
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    int player_tinkering = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillTinkering];
+    Zeal::String::replace(str_data, "%tinkering", player_tinkering >= 254 ? "0" : std::to_string(player_tinkering));
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    int player_research = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillResearch];
+    Zeal::String::replace(str_data, "%research", player_research == 255 ? "0" : std::to_string(player_research));
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    int player_alchemy = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillAlchemy];
+    Zeal::String::replace(str_data, "%alchemy", player_alchemy == 255 ? "0" : std::to_string(player_alchemy));
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    int player_baking = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillBaking];
+    Zeal::String::replace(str_data, "%baking", player_baking == 255 ? "0" : std::to_string(player_baking));
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    int player_tailoring = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillTailoring];
+    Zeal::String::replace(str_data, "%tailoring", player_tailoring == 255 ? "0" : std::to_string(player_tailoring));
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    int player_blacksmithing = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillBlacksmithing];
+    Zeal::String::replace(str_data, "%blacksmithing", player_blacksmithing == 255 ? "0" : std::to_string(player_blacksmithing));
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    int player_fletching = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillFletching];
+    Zeal::String::replace(str_data, "%fletching", player_fletching == 255 ? "0" : std::to_string(player_fletching));
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    int player_brewing = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillBrewing];
+    Zeal::String::replace(str_data, "%brewing", player_brewing == 255 ? "0" : std::to_string(player_brewing));
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    int player_jewelry_making = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillJewelryMaking];
+    Zeal::String::replace(str_data, "%jewelry_making", player_jewelry_making == 255 ? "0" : std::to_string(player_jewelry_making));
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    int player_pottery = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillPottery];
+    Zeal::String::replace(str_data, "%pottery", player_pottery == 255 ? "0" : std::to_string(player_pottery));
+  });
 }
 
 void Chat::handle_incoming_gsay(const char *msg) {
