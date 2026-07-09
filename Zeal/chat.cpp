@@ -985,11 +985,106 @@ void Chat::AddOutputText(Zeal::GameUI::ChatWnd *wnd, std::string &msg, short &ch
 }
 
 void Chat::InitPercentReplacements() {
+  // ////////////////////
+  // TARGET REPLACEMENTS
+  // ////////////////////
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string target_hp;
+    ZealService::get_instance()->labels_hook->GetLabel(29, target_hp);
+    Zeal::String::replace(str_data, "%targethp", target_hp + "%");
+    Zeal::String::replace(str_data, "%th", target_hp + "%");
+  });
+  percent_replacements.push_back([](std::string &str_data) {  // Reflexive pronoun, in line with %o/p/s
+    Zeal::GameStructures::Entity *targetInfo = Zeal::Game::get_target();
+    if (!targetInfo) return;
+    switch (targetInfo->Gender) {
+      case 0:  // Male
+        Zeal::String::replace(str_data, "%self", "himself");
+        break;
+      case 1:  // Female
+        Zeal::String::replace(str_data, "%self", "herself");
+        break;
+      default:  // Other
+        Zeal::String::replace(str_data, "%self", "itself");
+        break;
+    }
+  });
+  percent_replacements.push_back([](std::string &str_data) {  // Reflexive pronoun, in line with %o/p/s
+    Zeal::GameStructures::Entity *targetInfo = Zeal::Game::get_target();
+    if (!targetInfo) return;
+    switch (targetInfo->Gender) {
+      case 0:  // Male
+        Zeal::String::replace(str_data, "%uself", "Himself");
+        break;
+      case 1:  // Female
+        Zeal::String::replace(str_data, "%uself", "Herself");
+        break;
+      default:  // Other
+        Zeal::String::replace(str_data, "%uself", "Itself");
+        break;
+    }
+  });
+  percent_replacements.push_back([](std::string &str_data) {  // Reflexive pronoun, in line with %o/p/s
+    Zeal::GameStructures::Entity *targetInfo = Zeal::Game::get_target();
+    if (!targetInfo) return;
+    switch (targetInfo->Gender) {
+      case 0:  // Male
+        Zeal::String::replace(str_data, "%uo", "Him");
+        break;
+      case 1:  // Female
+        Zeal::String::replace(str_data, "%uo", "Her");
+        break;
+      default:  // Other
+        Zeal::String::replace(str_data, "%uo", "It");
+        break;
+    }
+  });
+  percent_replacements.push_back([](std::string &str_data) {  // Reflexive pronoun, in line with %o/p/s
+    Zeal::GameStructures::Entity *targetInfo = Zeal::Game::get_target();
+    if (!targetInfo) return;
+    switch (targetInfo->Gender) {
+      case 0:  // Male
+        Zeal::String::replace(str_data, "%up", "His");
+        break;
+      case 1:  // Female
+        Zeal::String::replace(str_data, "%up", "Hers");
+        break;
+      default:  // Other
+        Zeal::String::replace(str_data, "%up", "It");
+        break;
+    }
+  });
+  percent_replacements.push_back([](std::string &str_data) {  // Reflexive pronoun, in line with %o/p/s
+    Zeal::GameStructures::Entity *targetInfo = Zeal::Game::get_target();
+    if (!targetInfo) return;
+    switch (targetInfo->Gender) {
+      case 0:  // Male
+        Zeal::String::replace(str_data, "%us", "He");
+        break;
+      case 1:  // Female
+        Zeal::String::replace(str_data, "%us", "She");
+        break;
+      default:  // Other
+        Zeal::String::replace(str_data, "%us", "It");
+        break;
+    }
+  });
+  
+  // ///////////////////////
+  // CHARACTER REPLACEMENTS
+  // ///////////////////////
+  // Character Stats
   percent_replacements.push_back([](std::string &str_data) {
     std::string mana;
     ZealService::get_instance()->labels_hook->GetLabel(20, mana);
     Zeal::String::replace(str_data, "%mana", mana + "%");
     Zeal::String::replace(str_data, "%n", mana + "%");
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string mana;
+    ZealService::get_instance()->labels_hook->GetLabel(124, mana);
+    Zeal::String::replace(str_data, "%rawmana", mana + "%");
+    Zeal::String::replace(str_data, "%rn", mana + "%");
   });
   percent_replacements.push_back([](std::string &str_data) {
     std::string hp;
@@ -998,34 +1093,20 @@ void Chat::InitPercentReplacements() {
     Zeal::String::replace(str_data, "%h", hp + "%");
   });
   percent_replacements.push_back([](std::string &str_data) {
-    std::stringstream ss;
-    ss << std::fixed << std::setprecision(2) << std::ceil(Zeal::Game::get_self()->Position.x * 100) / 100 << ", "
-       << std::ceil(Zeal::Game::get_self()->Position.y * 100) / 100 << ", "
-       << std::ceil(Zeal::Game::get_self()->Position.z * 100) / 100;
-    Zeal::String::replace(str_data, "%loc", ss.str());
+    std::string hp;
+    ZealService::get_instance()->labels_hook->GetLabel(17, hp);
+    Zeal::String::replace(str_data, "%rawhp", hp + "%");
+    Zeal::String::replace(str_data, "%rh", hp + "%");
   });
   percent_replacements.push_back([](std::string &str_data) {
-    std::stringstream ss;
-    ss << std::fixed << std::setprecision(2) << std::ceil(Zeal::Game::get_self()->Position.x * 100) / 100 << " "
-       << std::ceil(Zeal::Game::get_self()->Position.y * 100) / 100;
-    Zeal::String::replace(str_data, "%pos", ss.str());
+    std::string endurance;
+    ZealService::get_instance()->labels_hook->GetLabel(21, endurance);
+    Zeal::String::replace(str_data, "%end", endurance + "%");
   });
   percent_replacements.push_back([](std::string &str_data) {
-    std::string target_hp;
-    ZealService::get_instance()->labels_hook->GetLabel(29, target_hp);
-    Zeal::String::replace(str_data, "%targethp", target_hp + "%");
-    Zeal::String::replace(str_data, "%th", target_hp + "%");
-  });
-  percent_replacements.push_back([](std::string &str_data) {
-    std::string pet_hp;
-    ZealService::get_instance()->labels_hook->GetLabel(69, pet_hp);
-    Zeal::String::replace(str_data, "%php", pet_hp + "%");
-  });
-  percent_replacements.push_back([](std::string &str_data) {
-    std::string pet_name;
-    ZealService::get_instance()->labels_hook->GetLabel(68, pet_name);
-    Zeal::String::replace(str_data, "%pname", pet_name);
-    Zeal::String::replace(str_data, "%pn", pet_name);
+    std::string player_lvl;
+    ZealService::get_instance()->labels_hook->GetLabel(2, player_lvl);
+    Zeal::String::replace(str_data, "%lvl", player_lvl);
   });
   percent_replacements.push_back([](std::string &str_data) {
     std::string player_str;
@@ -1087,53 +1168,144 @@ void Chat::InitPercentReplacements() {
     ZealService::get_instance()->labels_hook->GetLabel(16, player_mr);
     Zeal::String::replace(str_data, "%mr", player_mr);
   });
+  // Character Skills
   percent_replacements.push_back([](std::string &str_data) {
-    int player_fishing = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillFishing];
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    int player_fishing = self->CharInfo->Skills[Zeal::GameEnums::SkillFishing];
     Zeal::String::replace(str_data, "%fishing", player_fishing == 255 ? "0" : std::to_string(player_fishing));
   });
   percent_replacements.push_back([](std::string &str_data) {
-    int player_make_poison = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillMakePoison];
-    Zeal::String::replace(str_data, "%make_poison", player_make_poison == 255 ? "0" : std::to_string(player_make_poison));
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    int player_make_poison = self->CharInfo->Skills[Zeal::GameEnums::SkillMakePoison];
+    Zeal::String::replace(str_data, "%make_poison",
+                          player_make_poison == 255 ? "0" : std::to_string(player_make_poison));
   });
   percent_replacements.push_back([](std::string &str_data) {
-    int player_tinkering = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillTinkering];
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    int player_tinkering = self->CharInfo->Skills[Zeal::GameEnums::SkillTinkering];
     Zeal::String::replace(str_data, "%tinkering", player_tinkering >= 254 ? "0" : std::to_string(player_tinkering));
   });
   percent_replacements.push_back([](std::string &str_data) {
-    int player_research = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillResearch];
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    int player_research = self->CharInfo->Skills[Zeal::GameEnums::SkillResearch];
     Zeal::String::replace(str_data, "%research", player_research == 255 ? "0" : std::to_string(player_research));
   });
   percent_replacements.push_back([](std::string &str_data) {
-    int player_alchemy = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillAlchemy];
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    int player_alchemy = self->CharInfo->Skills[Zeal::GameEnums::SkillAlchemy];
     Zeal::String::replace(str_data, "%alchemy", player_alchemy == 255 ? "0" : std::to_string(player_alchemy));
   });
   percent_replacements.push_back([](std::string &str_data) {
-    int player_baking = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillBaking];
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    int player_baking = self->CharInfo->Skills[Zeal::GameEnums::SkillBaking];
     Zeal::String::replace(str_data, "%baking", player_baking == 255 ? "0" : std::to_string(player_baking));
   });
   percent_replacements.push_back([](std::string &str_data) {
-    int player_tailoring = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillTailoring];
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    int player_tailoring = self->CharInfo->Skills[Zeal::GameEnums::SkillTailoring];
     Zeal::String::replace(str_data, "%tailoring", player_tailoring == 255 ? "0" : std::to_string(player_tailoring));
   });
   percent_replacements.push_back([](std::string &str_data) {
-    int player_blacksmithing = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillBlacksmithing];
-    Zeal::String::replace(str_data, "%blacksmithing", player_blacksmithing == 255 ? "0" : std::to_string(player_blacksmithing));
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    int player_blacksmithing = self->CharInfo->Skills[Zeal::GameEnums::SkillBlacksmithing];
+    Zeal::String::replace(str_data, "%blacksmithing",
+                          player_blacksmithing == 255 ? "0" : std::to_string(player_blacksmithing));
   });
   percent_replacements.push_back([](std::string &str_data) {
-    int player_fletching = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillFletching];
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    int player_fletching = self->CharInfo->Skills[Zeal::GameEnums::SkillFletching];
     Zeal::String::replace(str_data, "%fletching", player_fletching == 255 ? "0" : std::to_string(player_fletching));
   });
   percent_replacements.push_back([](std::string &str_data) {
-    int player_brewing = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillBrewing];
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    int player_brewing = self->CharInfo->Skills[Zeal::GameEnums::SkillBrewing];
     Zeal::String::replace(str_data, "%brewing", player_brewing == 255 ? "0" : std::to_string(player_brewing));
   });
   percent_replacements.push_back([](std::string &str_data) {
-    int player_jewelry_making = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillJewelryMaking];
-    Zeal::String::replace(str_data, "%jewelry_making", player_jewelry_making == 255 ? "0" : std::to_string(player_jewelry_making));
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    int player_jewelry_making = self->CharInfo->Skills[Zeal::GameEnums::SkillJewelryMaking];
+    Zeal::String::replace(str_data, "%jewelry_making",
+                          player_jewelry_making == 255 ? "0" : std::to_string(player_jewelry_making));
   });
   percent_replacements.push_back([](std::string &str_data) {
-    int player_pottery = Zeal::Game::get_self()->CharInfo->Skills[Zeal::GameEnums::SkillPottery];
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    int player_pottery = self->CharInfo->Skills[Zeal::GameEnums::SkillPottery];
     Zeal::String::replace(str_data, "%pottery", player_pottery == 255 ? "0" : std::to_string(player_pottery));
+  });
+  // Character Coins
+  percent_replacements.push_back([](std::string &str_data) {
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    int copper = self->CharInfo->Copper;
+    Zeal::String::replace(str_data, "%cp", std::to_string(copper));
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    int silver = self->CharInfo->Silver;
+    Zeal::String::replace(str_data, "%sp", std::to_string(silver));
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    int gold = self->CharInfo->Gold;
+    Zeal::String::replace(str_data, "%sp", std::to_string(gold));
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    int platinum = self->CharInfo->Platinum;
+    Zeal::String::replace(str_data, "%sp", std::to_string(platinum));
+  });
+  // Character Misc
+  percent_replacements.push_back([](std::string &str_data) {
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    std::stringstream ss;
+    ss << std::fixed << std::setprecision(2) << std::ceil(self->Position.x * 100) / 100 << ", "
+       << std::ceil(self->Position.y * 100) / 100 << ", "
+       << std::ceil(self->Position.z * 100) / 100;
+    Zeal::String::replace(str_data, "%loc", ss.str());
+    Zeal::String::replace(str_data, "%pos", ss.str());
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    Zeal::GameStructures::Entity *self = Zeal::Game::get_self();
+    if (!self) return;
+    std::string player_guild = Zeal::Game::get_player_guild_name(self->GuildId);
+    Zeal::String::replace(str_data, "%gu", player_guild);
+  });
+
+  // /////////////////
+  // PET REPLACEMENTS
+  // /////////////////
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string pet_hp;
+    ZealService::get_instance()->labels_hook->GetLabel(69, pet_hp);
+    Zeal::String::replace(str_data, "%php", pet_hp + "%");
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string pet_name; // Alternative to built-in %m, shows nothing instead of "Pet"
+    ZealService::get_instance()->labels_hook->GetLabel(68, pet_name);
+    Zeal::String::replace(str_data, "%pname", pet_name);
+    Zeal::String::replace(str_data, "%pn", pet_name);
+  });
+  percent_replacements.push_back([](std::string &str_data) {
+    std::string pet_target;
+    ZealService::get_instance()->labels_hook->GetGauge(41, pet_target);
+    Zeal::String::replace(str_data, "%ptarget", pet_target);
+    Zeal::String::replace(str_data, "%pt", pet_target);
   });
 }
 
